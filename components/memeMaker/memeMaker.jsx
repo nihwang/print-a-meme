@@ -1,10 +1,45 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, Image, StyleSheet, TextInput, View, Dimensions } from 'react-native';
+import { Text, ScrollView, Image, StyleSheet, TextInput, View, Dimensions, Button } from 'react-native';
 import { getMemeImg } from '../../api/memeApi';
+import MultiSelect from 'react-native-multiple-select'
+
+const items = [{
+  id: '92iijs7yta',
+  name: 'Ondo'
+}, {
+  id: 'a0s0a8ssbsd',
+  name: 'Ogun'
+}, {
+  id: '16hbajsabsd',
+  name: 'Calabar'
+}, {
+  id: 'nahs75a5sg',
+  name: 'Lagos'
+}, {
+  id: '667atsas',
+  name: 'Maiduguri'
+}, {
+  id: 'hsyasajs',
+  name: 'Anambra'
+}, {
+  id: 'djsjudksjd',
+  name: 'Benue'
+}, {
+  id: 'sdhyaysdj',
+  name: 'Kaduna'
+}, {
+  id: 'suudydjsjd',
+  name: 'Abuja'
+}]
 
 const deviceWidth = Dimensions.get('window').width - 32;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   textInput: {
     height: 40,
     borderColor: 'gray',
@@ -31,9 +66,15 @@ const styles = StyleSheet.create({
   },
   bottomText: {
     bottom: 16,
+  },
+  multiSelectContainer: {
+    marginTop: 16,
+    width: '100%',
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 16,
   }
 });
-
 
 class MemeMaker extends Component {
   constructor() {
@@ -42,6 +83,7 @@ class MemeMaker extends Component {
       randomImg: '',
       topText: '',
       bottomText: '',
+      selectedItems: []
     };
   }
 
@@ -53,7 +95,14 @@ class MemeMaker extends Component {
     this.setState({ randomImg: response[Math.floor(Math.random() * response.length)] });
   }
 
+  onSelectedItemsChange = (selectedItems) => {
+    this.setState({ selectedItems }, () => console.warn('Selected Items: ', selectedItems))
+  }
+
+
   render() {
+    const { selectedItems } = this.state
+
     return (
       <ScrollView>
         <View>
@@ -76,6 +125,43 @@ class MemeMaker extends Component {
           onChangeText={text => this.setState({bottomText: text})}
           defaultValue={this.state.bottomText}
         />
+        <View style={styles.container}>
+          <View style={styles.multiSelectContainer}>
+            <MultiSelect
+              items={items}
+              uniqueKey='id'
+              onSelectedItemsChange={this.onSelectedItemsChange}
+              selectedItems={selectedItems}
+              selectText='Pick Contacts'
+              searchInputPlaceholderText='Search contacts...'
+              onChangeInput={(text) => console.warn(text)}
+              tagRemoveIconColor='#000'
+              tagBorderColor='#000'
+              tagTextColor='#000'
+              selectedItemTextColor='#000'
+              selectedItemIconColor='#000'
+              itemTextColor='#000'
+              displayKey='name'
+              searchInputStyle={{ color: '#000', height: 32, padding: 4 }}
+              styleInputGroup={{ marginTop: 16, marginBottom: 16, padding: 4}}
+              styleMainWrapper={{ paddingTop: 8}}
+              styleSelectorContainer={{ marginBottom: 0}}
+              submitButtonColor='#000'
+              submitButtonText='Select'
+              removeSelected
+            />
+          </View>
+        </View>
+        <View style={{backgroundColor: 'black'}}>
+          <Button 
+            style={{
+              marginTop: 24,
+              padding: 8,
+            }}
+            color="white"
+            title="Send postcards!">
+          </Button>
+        </View>
       </ScrollView>
     );
   }
