@@ -1,0 +1,12 @@
+{
+  "name": "print-a-meme",
+  "displayName": "print-a-meme",
+  "expo": {
+    "name": "print-a-meme",
+    "slug": "print-a-meme",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
